@@ -39,10 +39,10 @@ def plot_spectrogram(signals, labels_flag=False, rate=44100,mode="simple", targe
 
 
 #########
-input_directory = r'/home/rabi/Documents/Thesis/spectrogram normalization experiment'
+input_directory = r'/home/rabi/Documents/Thesis/preprocessing and spectrograms generation/spectrogram normalization experiment'
 #output_directory=r'/home/rabi/Documents/Thesis/audio data analysis/audio-clustering/all plots'
-output_directory=r'/home/rabi/Documents/Thesis/spectrogram normalization experiment'
-bat_calls_data_dir=r'//home/rabi/Documents/Thesis/spectrogram normalization experiment/results.csv'
+output_directory=r'/home/rabi/Documents/Thesis/preprocessing and spectrograms generation/spectrogram normalization experiment'
+bat_calls_data_dir=r'/home/rabi/Documents/Thesis/preprocessing and spectrograms generation/spectrogram normalization experiment/results.csv'
 final_target_length=0.5 #1 second
 
 bat_calls_data=pd.read_csv(bat_calls_data_dir)
@@ -56,7 +56,7 @@ bat_calls_data_processed=bat_calls_data_processed.set_index("just_file_name")
 # normalized_sound.export("nomrmalizedAudio.m4a", format="mp4")
 
 
-target_dBFS=0
+target_dBFS=5
 for path in (Path(input_directory).rglob('*.wav')):
 	sound = AudioSegment.from_file(path)
 	sound=match_target_amplitude(sound, target_dBFS)

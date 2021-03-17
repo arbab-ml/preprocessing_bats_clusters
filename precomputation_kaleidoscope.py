@@ -36,14 +36,20 @@ plt.ioff()#turning interactive plotting OFF
 
 import cv2
 import IPython.display as ipd
+from pydub import AudioSegment
+
+def match_target_amplitude(sound, target_dBFS):
+    change_in_dBFS = target_dBFS - sound.dBFS
+    return sound.apply_gain(change_in_dBFS)
+
 
 EPS = 1e-8
 #Reference: https://www.kaggle.com/haqishen/augmentation-methods-for-audio
 #! USE THIS AFTER APPLYING THE rsync COMMAND. 
 
-def _normalize(S):
-	min_level_db=-35
-	return np.clip((S - min_level_db) / -min_level_db, 0, 1)
+# def _normalize(S):
+# 	min_level_db=-35
+# 	return np.clip((S - min_level_db) / -min_level_db, 0, 1)
 
 def calc_fft(y, rate):
 	n = len(y)
@@ -128,7 +134,7 @@ def plot_spectrogram(signals, labels_flag=False, rate=44100,mode="simple", targe
 	hop_length_value=256
 	if (mode=="simple"):
 		spec = np.abs(librosa.stft(signals, hop_length=hop_length_value, n_fft=5120))
-		spec = _normalize(librosa.amplitude_to_db(spec, ref=np.max))  #_normalize removed
+		spec = (librosa.amplitude_to_db(spec, ref=np.max))  #_normalize removed
 		axes=librosa.display.specshow(spec, sr=rate,hop_length=hop_length_value, x_axis='time', y_axis='linear') #when computing an STFT, you can pass that same parameter to specshow. 
 																					#This ensures that axis scales (e.g. time or frequency) are computed correctly.
 		ax2 = fig.gca() #getting this to set the range
@@ -140,12 +146,16 @@ def plot_spectrogram(signals, labels_flag=False, rate=44100,mode="simple", targe
 		start_ = int(np.random.uniform(- (0.2*rate),(0.2*rate)))
 		print('time shift: ',start_)
 		if start_ >= 0:
-			wav_time_shift = np.r_[signals[start_:], np.random.uniform(-0.001,0.001, start_)]
+			#wav_time_shift = np.r_[signals[start_:], np.random.uniform(-0.001,0.001, start_)]
+			wav_time_shift = np.r_[signals[start_:], np.random.choice(signals, -start_ )]   ##padding empty space with elelments of same distribution
+			
 		else:
-			wav_time_shift = np.r_[np.random.uniform(-0.001,0.001, -start_), signals[:start_]]
+			#wav_time_shift = np.r_[np.random.uniform(-0.001,0.001, -start_), signals[:start_]]
+			wav_time_shift = np.r_[np.random.choice(signals, -start_ ), signals[:start_]]
+			
 		#^ processing done, now plotting
 		spec = np.abs(librosa.stft(wav_time_shift, hop_length=hop_length_value, n_fft=5120))
-		spec = _normalize(librosa.amplitude_to_db(spec, ref=np.max))#_normalize removed
+		spec = (librosa.amplitude_to_db(spec, ref=np.max))#_normalize removed
 		axes=librosa.display.specshow(spec, sr=rate, x_axis='time',hop_length=hop_length_value, y_axis='linear')
 		ax2 = fig.gca() #getting this to set the range
 		print("Before adjusting axes, the yaxis range was: ", ax2.get_ylim())
@@ -158,15 +168,15 @@ def plot_spectrogram(signals, labels_flag=False, rate=44100,mode="simple", targe
 		print('speed rate: %.3f' % speed_rate, '(lower is faster)')
 		if len(wav_speed_tune) < (target_length*rate):
 			pad_len = (target_length*rate) - len(wav_speed_tune)
-			wav_speed_tune = np.r_[np.random.uniform(-0.001,0.001,int(pad_len/2)),
+			wav_speed_tune = np.r_[np.random.choice(signals,int(pad_len/2)),
 								wav_speed_tune,
-								np.random.uniform(-0.001,0.001,int(np.ceil(pad_len/2)))]
+								np.random.choice(signals,int(np.ceil(pad_len/2)))]
 		else: 
 			cut_len = len(wav_speed_tune) - (target_length*rate)
 			wav_speed_tune = wav_speed_tune[int(cut_len/2):int(cut_len/2)+int(target_length*rate)]
 		#^ processing done, now plotting
 		spec = np.abs(librosa.stft(wav_speed_tune, hop_length=hop_length_value, n_fft=5120))
-		spec = _normalize(librosa.amplitude_to_db(spec, ref=np.max))#_normalize removed
+		spec = (librosa.amplitude_to_db(spec, ref=np.max))#_normalize removed
 		axes=librosa.display.specshow(spec, sr=rate, x_axis='time',hop_length=hop_length_value, y_axis='linear')
 		ax2 = fig.gca() #getting this to set the range
 		print("Before adjusting axes, the yaxis range was: ", ax2.get_ylim())
@@ -198,8 +208,9 @@ required_output_number=999999999999
 input_directory = r'/media/rabi/Data/ThesisData/Bats audio records/2019/SM4BAT/WWNP'
 #output_directory=r'/home/rabi/Documents/Thesis/audio data analysis/audio-clustering/all plots'
 output_directory=r'/media/rabi/Data/ThesisData/audio data analysis/audio-clustering/plots_15march_b'
+target_dBFS=0  ##USED FOR NORMALIZATION
 
-final_target_length=0.3 #0.5 second
+final_target_length=0.5 #0.5 second
 iterator=0
 output_number_iterator=0
 
@@ -214,7 +225,18 @@ for index, row_data in tqdm(cluster_kaleidoscope.iterrows()):
 		path=row_data["INDIR"]+'/'+row_data["FOLDER"]+'/'+row_data["IN FILE"]
 		save_to=row_data["IN FILE"]+' at '+str(row_data["OFFSET"])
 		#save_to= str(path.relative_to(input_directory)).split('/')[-1]
-		signal, sr = librosa.load(path,sr=None)    #Explicitly Setting sr=None ensures original sampling preserved -- STOVF    
+		
+		#OLD METHOD--> signal, sr = librosa.load(path,sr=None)    #Explicitly Setting sr=None ensures original sampling preserved -- STOVF   
+		sound = AudioSegment.from_file(path)
+		sound=match_target_amplitude(sound, target_dBFS)
+		samples = sound.get_array_of_samples()
+		new_sound = sound._spawn(samples)
+		signal = np.array(samples).astype(np.float32)
+		sr=sound.frame_rate
+
+
+
+
 		#Segmenting to a random value of 1 seconds (for initial experiemtation)
 		length= signal.shape[0]/sr 
 		temp_results={"file_name":save_to, "length": length, "sample rate": sr}    
