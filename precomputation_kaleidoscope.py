@@ -147,7 +147,7 @@ def plot_spectrogram(signals, labels_flag=False, rate=44100,mode="simple", targe
 		print('time shift: ',start_)
 		if start_ >= 0:
 			#wav_time_shift = np.r_[signals[start_:], np.random.uniform(-0.001,0.001, start_)]
-			wav_time_shift = np.r_[signals[start_:], np.random.choice(signals, -start_ )]   ##padding empty space with elelments of same distribution
+			wav_time_shift = np.r_[signals[start_:], np.random.choice(signals, start_ )]   ##padding empty space with elelments of same distribution
 			
 		else:
 			#wav_time_shift = np.r_[np.random.uniform(-0.001,0.001, -start_), signals[:start_]]

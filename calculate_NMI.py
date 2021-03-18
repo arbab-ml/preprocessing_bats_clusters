@@ -12,7 +12,7 @@ kal_results=kal_results[["IN FILE", "TOP1MATCH*"]]
 kal_results["TOP1MATCH*"]=kal_results["TOP1MATCH*"].apply(lambda x: x.split('.')[1])
 #kal_results["IN FILE"]=kal_results["IN FILE"].apply(lambda x: x.split('.')[0])
 #read the results of ALGORITHM ans segment useful columns
-algo_results=pd.read_csv("/media/rabi/Data/ThesisData/audio data analysis/audio-clustering/plots_15march_b/spectrograms/results/results_deepcluster.csv")
+algo_results=pd.read_csv("/media/rabi/Data/ThesisData/audio data analysis/audio-clustering/plots_15march_b/spectrograms_normalized/results/results_deepcluster.csv")
 algo_results["IN FILE"]= algo_results["Image Name"].apply(lambda x: x.split('/')[-1])
 algo_results=algo_results[["IN FILE", "Prediction"] ]
 
