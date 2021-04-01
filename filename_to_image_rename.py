@@ -2,8 +2,8 @@ import pandas as pd
 import os
 import shutil
 input_data_directory="/media/rabi/Data/ThesisData/audio data analysis/audio-clustering/plots_15march_b/spectrograms_normalized/batsnet_train/1"
-input_file="//media/rabi/Data/ThesisData/audio data analysis/audio-clustering/plots_15march_b/spectrograms_normalized/results/results_SCAN.csv"
-output_data_directory="/media/rabi/Data/ThesisData/audio data analysis/audio-clustering/plots_15march_b/spectrograms_normalized/results/results_SCAN"
+input_file="//media/rabi/Data/ThesisData/audio data analysis/audio-clustering/plots_15march_b/spectrograms_normalized/results/results_iic.csv"
+output_data_directory="/media/rabi/Data/ThesisData/audio data analysis/audio-clustering/plots_15march_b/spectrograms_normalized/results/results_iic"
 
 
 input_data=pd.read_csv(input_file)
