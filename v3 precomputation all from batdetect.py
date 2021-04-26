@@ -63,7 +63,7 @@ def plot_spectrogram(signals, labels_flag=False, rate=44100,mode="simple", targe
 								 sharey=True, figsize=(5,5))
 	fig.suptitle('Spectrogram', size=16)
 	#axes.set_title(list(fbank.keys())[i])
-	hop_length_value=256
+	hop_length_value=512
 	if (mode=="simple"):
 		spec = np.abs(librosa.stft(signals, hop_length=hop_length_value, n_fft=5120))
 		spec = (librosa.amplitude_to_db(spec, ref=np.max))  #_normalize removed
@@ -90,7 +90,7 @@ def plot_spectrogram(signals, labels_flag=False, rate=44100,mode="simple", targe
 		spec = (librosa.amplitude_to_db(spec, ref=np.max))#_normalize removed
 		axes=librosa.display.specshow(spec, sr=rate, x_axis='time',hop_length=hop_length_value, y_axis='linear')
 		ax2 = fig.gca() #getting this to set the range
-		print("Before adjusting axes, the yaxis range was: ", ax2.get_ylim())
+		#print("Before adjusting axes, the yaxis range was: ", ax2.get_ylim())
 		ax2.set_ylim(bottom=bottom_value, top=top_value) # Setting frequency betweei 8KHz and 92KHz
 		return fig
 
@@ -121,10 +121,10 @@ def plot_spectrogram(signals, labels_flag=False, rate=44100,mode="simple", targe
 
 mode="plotting"
 target_sampling_rate=256000
-sample_size=99999999999999
-required_output_number=999999999999
+sample_size=float('inf')
+required_output_number=float('inf')
 input_directory = r'/media/rabi/Data/ThesisData/Bats audio records'
-bat_calls_data_dir="/media/rabi/Data/ThesisData/audio data analysis/audio-clustering/plots_26april/results_15march.csv"
+bat_calls_data_dir="/media/rabi/Data/ThesisData/audio data analysis/audio-clustering/plots_26april/batdetect_26april.csv"
 output_directory=r'/media/rabi/Data/ThesisData/audio data analysis/audio-clustering/plots_26april'
 target_dBFS=0  ##USED FOR NORMALIZATION
 
@@ -135,10 +135,11 @@ output_number_iterator=0
 random.seed(5) 
 all_stats=pd.DataFrame(columns=["file_name", "length", "sample rate"])
 
-bat_calls_data=pd.read_csv(bat_calls_data_dir)
+bat_calls_data_raw=pd.read_csv(bat_calls_data_dir)
+bat_calls_data=bat_calls_data_raw[ bat_calls_data_raw["detection_prob"]>=0.99].reset_index()
 
-bat_calls_data_processed=bat_calls_data
-# bat_calls_data_processed=bat_calls_data.iloc[bat_calls_data.groupby('file_name')['detection_prob'].agg(pd.Series.idxmax)]
+# bat_calls_data_processed=bat_calls_data
+bat_calls_data_processed=bat_calls_data.iloc[bat_calls_data.groupby('file_name')['detection_prob'].agg(pd.Series.idxmax)]
 # bat_calls_data_processed=bat_calls_data_processed.set_index("file_name")
 
 for index, row_data in tqdm(bat_calls_data_processed.iterrows()):
@@ -148,8 +149,9 @@ for index, row_data in tqdm(bat_calls_data_processed.iterrows()):
 		#save_to= str(path.relative_to(input_directory)).split('/')[-1]
 		
 		#OLD METHOD--> signal, sr = librosa.load(path,sr=None)    #Explicitly Setting sr=None ensures original sampling preserved -- STOVF   
-		sound = AudioSegment.from_file(path).set_frame_rate(target_sampling_rate)
-
+		sound = AudioSegment.from_file(path)
+		if (sound.frame_rate!=target_sampling_rate):
+			sound=sound.set_frame_rate(target_sampling_rate)
 
 		sound=match_target_amplitude(sound, target_dBFS)
 		samples = sound.get_array_of_samples()
@@ -162,7 +164,7 @@ for index, row_data in tqdm(bat_calls_data_processed.iterrows()):
 
 		#Segmenting to a random value of 1 seconds (for initial experiemtation)
 		length= signal.shape[0]/sr 
-		temp_results={"file_name":save_to, "length": length, "sample rate": sr}    
+		temp_results={"file_name":row_data["file_name"].split('/')[-1], "length": length, "sample rate": sr}    
 		all_stats=all_stats.append(temp_results, ignore_index=True)
 		
 		iterator=iterator+1
