@@ -45,11 +45,11 @@ def calculate_metric(first_file, second_file, metric_name):
     # +', '  +'Ad NMI: ' +str(result3)[:4]   +', '  +'Completeness: ' +str(result4)[:4]      )
     return result
 
-files_directory="/media/rabi/Data/ThesisData/audio data analysis/audio-clustering/plots_15march_b/spectrograms_normalized/results/results_csvs/"
-file_names=[ "IIC", "JULE", "SCAN","IMSAT"]
+files_directory="/media/rabi/Data/ThesisData/audio data analysis/audio-clustering/plots_26april/spectrograms_normalized_croped_128/results/"
+file_names=[ "IIC","IMSAT", "DEEPCLUSTER", "JULE", "SCAN"]  #EXCLUDED JULE FOR NOW
 associated_files={"IIC": "results_iic",
 "JULE": "results_jule",
-"SCAN":"results_SCAN_old",
+"SCAN":"results_scan",
 "IMSAT":"results_imsat",
 "DEEPCLUSTER":"results_deepcluster"}
 
