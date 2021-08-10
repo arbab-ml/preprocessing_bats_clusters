@@ -1,9 +1,9 @@
 import pandas as pd
 import os
 import shutil
-input_data_directory="/media/rabi/Data/ThesisData/audio data analysis/specie-clustering/Identified calls/all_specie/spectrograms_vmin_vmax_highpass_cropped/batsnet_train/1"
-input_file="/media/rabi/Data/ThesisData/audio data analysis/specie-clustering/Identified calls/all_specie/spectrograms_vmin_vmax_highpass_cropped/results/results_imsat.csv"
-output_data_directory="/media/rabi/Data/ThesisData/audio data analysis/specie-clustering/Identified calls/all_specie/spectrograms_vmin_vmax_highpass_cropped/results/results_imsat"
+input_data_directory="/media/rabi/Data/ThesisData/audio data analysis/specie-clustering/Identified calls/all_specie/spectrograms_vmin_vmax_highpass_balance_top5_2_cropped/batsnet_train/1"
+input_file="/media/rabi/Data/ThesisData/audio data analysis/specie-clustering/Identified calls/all_specie/spectrograms_vmin_vmax_highpass_balance_top5_2_cropped/results/results_deepcluster15.csv"
+output_data_directory="/media/rabi/Data/ThesisData/audio data analysis/specie-clustering/Identified calls/all_specie/spectrograms_vmin_vmax_highpass_balance_top5_2_cropped/results/results_deepcluster15"
 
 
 input_data=pd.read_csv(input_file)

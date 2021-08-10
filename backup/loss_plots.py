@@ -2,7 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-data_directory="/media/rabi/Data/ThesisData/audio data analysis/specie-clustering/Identified calls/all_specie/spectrograms_vmin_vmax_highpass_balance_top5_2_cropped/results/"
+data_directory="/media/rabi/Data/ThesisData/audio data analysis/audio-clustering/plots_26april/spectrograms_normalized_croped_128/results/"
 metadata={
     "imsat" : { "file_name": "stats_imsat.csv",
                 "y_axis": "Loss",
@@ -30,13 +30,13 @@ metadata={
                 "title": "Sum of distances of samples to their closest cluster center"
             },
          "specie" : { "file_name": "stats_commulative.csv",
-                "y_axis": ["IMSAT Loss"	,"IIC (Head A) Loss" ,	"DeepCluster ConvNet Loss","SCAN Consistency Loss"],
-                "title": "Learning Curve of Different Algorithms for Specie Clustering [SCAN loss is placeholder yet]"
+                "y_axis": ["IMSAT Loss"	,"IIC (Head A) Loss" ,	"DeepCluster Clustering Loss",	"DeepCluster ConvNet Loss"],
+                "title": "Sum of distances of samples to their closest cluster center"
             },
 }
 
 
-plot_turn="specie"
+plot_turn="k-Medoid-3axis"
 
 
 if plot_turn=="scan":
@@ -223,65 +223,4 @@ elif plot_turn=='k-Medoid-3axis':
 
     # plt.show()
 
-
-elif plot_turn=='specie':
-
-    px = 1/plt.rcParams['figure.dpi']
-
-    meta_selected=metadata[plot_turn]
-    read_this=meta_selected["file_name"]
-    read_csv=pd.read_csv(data_directory+read_this).iloc[0:100,]
-    x1=read_csv["Epoch"]
-    y1=read_csv[meta_selected["y_axis"][0]]
-    y2=read_csv[meta_selected["y_axis"][1]]
-    y3=read_csv[meta_selected["y_axis"][2]]
-    y4=read_csv[meta_selected["y_axis"][3]]
-
-
-    fig, ax = plt.subplots(figsize=(2*600*px, 600*px))
-    fig.subplots_adjust(right=0.75)
-
-    twin1 = ax.twinx()
-    twin2 = ax.twinx()
-    twin3 = ax.twinx()
-        
-    # Offset the right spine of twin2.  The ticks and label have already been
-    # placed on the right by twinx above.
-    # twin2.spines.right.set_position(("axes", 1.2))
-    twin2.spines['right'].set_position(("axes", 1.1))
-    twin3.spines['right'].set_position(("axes", 1.2))
-
-    p1, = ax.plot(x1,y1, "b-", label=meta_selected["y_axis"][0])
-    p2, = twin1.plot(x1, y2, "r-", label=meta_selected["y_axis"][1])
-    p3, = twin2.plot(x1, y3, "g-", label=meta_selected["y_axis"][2])
-    p4, = twin3.plot(x1, y4, "y-", label=meta_selected["y_axis"][3])
-    
-    ax.set_title(meta_selected["title"])
-    # ax.set_xlim(0, 2)
-    # ax.set_ylim(0, 2)
-    # twin1.set_ylim(0, 4)
-    # twin2.set_ylim(1, 65)
-
-    ax.set_xlabel("Number of Epochs")
-    ax.set_ylabel(meta_selected["y_axis"][0])
-    twin1.set_ylabel(meta_selected["y_axis"][1])
-    twin2.set_ylabel(meta_selected["y_axis"][2])
-    twin3.set_ylabel(meta_selected["y_axis"][3])
-
-
-    ax.yaxis.label.set_color(p1.get_color())
-    twin1.yaxis.label.set_color(p2.get_color())
-    twin2.yaxis.label.set_color(p3.get_color())
-    twin3.yaxis.label.set_color(p4.get_color())
-
-    tkw = dict(size=4, width=1.5)
-    ax.tick_params(axis='y', colors=p1.get_color(), **tkw)
-    twin1.tick_params(axis='y', colors=p2.get_color(), **tkw)
-    twin2.tick_params(axis='y', colors=p3.get_color(), **tkw)
-    twin3.tick_params(axis='y', colors=p4.get_color(), **tkw)
-    
-    ax.tick_params(axis='x', **tkw)
-
-    ax.legend(handles=[p1, p2, p3,p4])
-    plt.savefig(data_directory+ meta_selected["file_name"]+'.jpeg')
 

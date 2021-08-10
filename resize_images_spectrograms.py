@@ -3,8 +3,8 @@ import os.path, sys
 from pathlib import Path
 from tqdm import tqdm
 # /media/rabi/Data/ThesisData/audio data analysis/audio-clustering/plots_26april/spectrograms_normalized
-input_path = "/media/rabi/Data/ThesisData/audio data analysis/specie-clustering/Identified calls/all_specie/spectrograms_vmin_vmax_highpass_balance_top5"
-output_path= "/media/rabi/Data/ThesisData/audio data analysis/specie-clustering/Identified calls/all_specie/spectrograms_vmin_vmax_highpass_balance_top5_cropped"
+input_path = "/media/rabi/Data/ThesisData/audio data analysis/specie-clustering/Identified calls/all_specie/spectrograms_specgram"
+output_path= "/media/rabi/Data/ThesisData/audio data analysis/specie-clustering/Identified calls/all_specie/spectrograms_specgram_cropped"
 dirs = Path(input_path).rglob('*.png')
 newsize=(128,128)
 def crop():
