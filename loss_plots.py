@@ -31,7 +31,7 @@ metadata={
             },
          "specie" : { "file_name": "stats_commulative.csv",
                 "y_axis": ["IMSAT Loss"	,"IIC (Head A) Loss" ,	"DeepCluster ConvNet Loss","SCAN Consistency Loss"],
-                "title": "Learning Curve of Different Algorithms for Specie Clustering [SCAN loss is placeholder yet]"
+                "title": "Learning Curve of Different Algorithms for Specie Clustering "
             },
 }
 

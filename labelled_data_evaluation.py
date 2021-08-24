@@ -16,7 +16,7 @@ from sklearn.metrics.cluster import mutual_info_score
 from sklearn.metrics.cluster import v_measure_score
 
 
-input_file="/media/rabi/Data/ThesisData/audio data analysis/specie-clustering/Identified calls/all_specie/spectrograms_vmin_vmax_highpass_balance_top5_2_cropped/results/results_deepcluster16.csv"
+input_file="/media/rabi/Data/ThesisData/audio data analysis/specie-clustering/Identified calls/all_specie/spectrograms_vmin_vmax_highpass_balance_top5_2_cropped/results/results_kmedoid_specie.csv"
 input_data=pd.read_csv(input_file)
 input_data["id_name"]=  input_data["Image Name"].str[:].apply(lambda x: x.split('/')[-1][:6])
 input_data["ground truth"] = input_data["id_name"].astype('category').cat.codes
