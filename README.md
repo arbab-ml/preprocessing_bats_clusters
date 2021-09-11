@@ -1,11 +1,6 @@
 # Scripts for Preprocessing and other utility functions 
 These scripts are used for preprocessing, evaluation, and plots generation. The purpose of each script is given below:
 
-#### `NMI_calculation_all.py`
-Calculates `normalized_mutual_info_score,mutual_info_score,
- adjusted_mutual_info_score, adjusted_rand_score, completeness_score, fowlkes_mallows_score, homogeneity_score, v_measure_score` between the output of clustering algorithms. 
-The input directory and output files names are given as input.  
-
 #### `calculate_stats.py`
 Calculates the sample rate and length of all the audio files in a directory. It takes the directory as input. 
 
@@ -34,11 +29,23 @@ Plots the learning curve of individual and multiple algorithms. The input direct
 Removes the axis labels, axis ticks, and titles from all the images (like `crop_images_spectrograms.py` ) and also resizes the spectrograms to 128x128 size. It takes the directory as input.
  
 #### `v3 precomputation all from batdetect.py`
-Generates Spectrograms and augmentations for Behavioral clustering (as in unlabelled data).  
+Generates Spectrograms and augmentations for Behavioral clustering (as in unlabelled data).  It takes as input:
+* target sample rate
+* Input directory containing raw audio files
+* The output file from batdetect (which contain the location of individual bat call in each audio recording)
+* Output directory for saving the spectrograms
 
 
 #### `v3_specie precomputation all from batdetect.py`
-Generates Spectrograms and augmentations for Specie clustering (as in labeled data).  
+Generates Spectrograms and augmentations for Specie clustering (as in labeled data). It also takes as input: 
+* target sample rate
+* Input directory containing raw audio files
+* The output file from batdetect (which contain the location of individual bat call in each audio recording)
+* Output directory for saving the spectrograms
 
+#### `NMI_calculation_all.py`
+Calculates `normalized_mutual_info_score,mutual_info_score,
+ adjusted_mutual_info_score, adjusted_rand_score, completeness_score, fowlkes_mallows_score, homogeneity_score, v_measure_score` between the output of clustering algorithms. 
+The input directory and output files names are given as input. 
 
 **Deprecated Files**: `v1 precomputation.py`, `v2 precomputation_kaleidoscope.py` 
