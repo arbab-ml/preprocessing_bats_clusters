@@ -56,29 +56,26 @@ def calc_fft(y, rate):
 
 #Ref: https://medium.com/analytics-vidhya/understanding-the-mel-spectrogram-fca2afa2ce53
 def plot_spectrogram(signals, labels_flag=False, rate=44100,mode="simple", target_length=3):
-	bottom_value=0#20000
-	top_value=16384#92000
+	bottom_value=20000
+	top_value=92000
 	vmin_value=-45
 	vmax_value=0
 	fig, axes = plt.subplots(nrows=1, ncols=1, sharex=False,
 								 sharey=True, figsize=(5,5))
 	fig.suptitle('Spectrogram', size=16)
 	#axes.set_title(list(fbank.keys())[i])
-	hop_length_value= 2*512 #8  #8
-	n_fft_value=2*1024#256
+	hop_length_value=8  #8
+	n_fft_value=256
 	if (mode=="simple"):
-	# 	spec = np.abs(librosa.stft(signals, hop_length=hop_length_value, n_fft=n_fft_value))
-	# 	spec = (librosa.amplitude_to_db(spec, ref=np.max))  #_normalize removed
-	# 	# axes=librosa.display.specshow(spec,vmin=vmin_value, vmax=vmax_value  ,sr=rate,hop_length=hop_length_value, x_axis='time', y_axis='linear') #when computing an STFT, you can pass that same parameter to specshow. 
-	# 	axes=librosa.display.specshow(spec,sr=rate,hop_length=hop_length_value, x_axis='time', y_axis='linear') #when computing an STFT, you can pass that same parameter to specshow. 
-		
-	# 	# print(spec.min(), spec.max())																#This ensures that axis scales (e.g. time or frequency) are computed correctly.
-	# 	ax2 = fig.gca() #getting this to set the range
-	# #	print("Before adjusting axes, the yaxis range was: ", ax2.get_ylim())
-	# 	ax2.set_ylim(bottom=bottom_value, top=top_value) # Setting frequency betweei 20KHz and 92KHz
-		plt.specgram(signals, Fs=rate)
+		spec = np.abs(librosa.stft(signals, hop_length=hop_length_value, n_fft=n_fft_value))
+		spec = (librosa.amplitude_to_db(spec, ref=np.max))  #_normalize removed
+		axes=librosa.display.specshow(spec,vmin=vmin_value, vmax=vmax_value  ,sr=rate,hop_length=hop_length_value, x_axis='time', y_axis='linear') #when computing an STFT, you can pass that same parameter to specshow. 
+		# print(spec.min(), spec.max())																#This ensures that axis scales (e.g. time or frequency) are computed correctly.
+		ax2 = fig.gca() #getting this to set the range
+	#	print("Before adjusting axes, the yaxis range was: ", ax2.get_ylim())
+		ax2.set_ylim(bottom=bottom_value, top=top_value) # Setting frequency betweei 20KHz and 92KHz
 		return fig
-		
+
 	elif (mode == "timeshift"):
 		start_ = (int(np.random.uniform(- (0.3*target_length*rate),(0.3*target_length*rate))))
 		#print('time shift: ',start_)
@@ -140,9 +137,9 @@ output_directory=r'/media/rabi/Data/ThesisData/audio data analysis/specie-cluste
 # output_directory=r'/media/rabi/Data/ThesisData/audio data analysis/specie-clustering/Identified calls/SHORTLISTED_OBVSERVATION/after'
 
 
-target_dBFS=-0  ##USED FOR NORMALIZATION
+target_dBFS=-20  ##USED FOR NORMALIZATION
 
-final_target_length=0.025#0.015  #0.025 #0.5 second
+final_target_length=0.015  #0.025 #0.5 second
 iterator=0
 output_number_iterator=0
 
@@ -236,7 +233,7 @@ for index, row_data in tqdm(bat_calls_data_processed.iterrows()):
 		sound_chunk=sound[start_value*1000: end_value*1000]
 		# sound_chunk=match_target_amplitude(sound_chunk, target_dBFS)
 		# sound_chunk=sound_chunk.low_pass_filter(70000)
-		# sound_chunk=sound_chunk.high_pass_filter(40000)
+		sound_chunk=sound_chunk.high_pass_filter(40000)
 		samples_chunk = sound_chunk.get_array_of_samples()
 		signal_chunk = np.array(samples_chunk).astype(np.float32)
 		
@@ -287,5 +284,3 @@ for index, row_data in tqdm(bat_calls_data_processed.iterrows()):
 # all_stats.to_csv("/media/rabi/Data/ThesisData/audio data analysis/audio-clustering/plots_26april/all_stats.csv")
 
 print("Finished")
-
-#spectrograms_specgram
