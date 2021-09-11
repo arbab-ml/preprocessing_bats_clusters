@@ -33,17 +33,12 @@ Plots the learning curve of individual and multiple algorithms. The input direct
 #### `resize_images_spectrograms.py`
 Removes the axis labels, axis ticks, and titles from all the images (like `crop_images_spectrograms.py` ) and also resizes the spectrograms to 128x128 size. It takes the directory as input.
  
-#### `NMI_calculation_all.py`
-Calculates 
+#### `v3 precomputation all from batdetect.py`
+Generates Spectrograms and augmentations for Behavioral clustering (as in unlabelled data).  
 
-#### `NMI_calculation_all.py`
-Calculates 
 
-#### `NMI_calculation_all.py`
-Calculates 
+#### `v3_specie precomputation all from batdetect.py`
+Generates Spectrograms and augmentations for Specie clustering (as in labeled data).  
 
-#### `NMI_calculation_all.py`
-Calculates 
 
-#### `NMI_calculation_all.py`
-Calculates 
+**Deprecated Files**: `v1 precomputation.py`, `v2 precomputation_kaleidoscope.py` 
