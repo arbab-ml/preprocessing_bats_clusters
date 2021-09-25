@@ -15,10 +15,12 @@ from sklearn.metrics.cluster import homogeneity_score
 from sklearn.metrics.cluster import mutual_info_score
 from sklearn.metrics.cluster import v_measure_score
 
-
-input_file="/media/rabi/Data/ThesisData/audio data analysis/specie-clustering/Identified calls/all_specie/spectrograms_vmin_vmax_highpass_balance_top5_2_cropped/results/ad check/results_scan (2).csv"
+label_offset=9 #Number of characters in start of label
+tot_cl=4 #Number of classes in ground truth
+# input_file="/media/rabi/Data/ThesisData/audio data analysis/specie-clustering/Identified calls/all_specie/spectrograms_vmin_vmax_highpass_balance_top5_2_cropped/results/ad check/results_scan (2).csv"
+input_file="/media/rabi/Data/ThesisData/audio data analysis/class-clustering/plots_25sep/activity_spectrograms_normalized_cropped_25sep/results/results_kmedoid (4).csv"
 input_data=pd.read_csv(input_file)
-input_data["id_name"]=  input_data["Image Name"].str[:].apply(lambda x: x.split('/')[-1][:6])
+input_data["id_name"]=  input_data["Image Name"].str[:].apply(lambda x: x.split('/')[-1][:label_offset])
 input_data["ground truth"] = input_data["id_name"].astype('category').cat.codes
 #Now calculating F1
 ##########################################################################################################
@@ -103,7 +105,7 @@ def f1_hungarian(f1):
     return fscore
 result=f1_hungarian(f_matrix(input_data["Prediction"], input_data["ground truth"]))
 print(result)
-tot_cl=5
+
 def compute_accuracy(y_pred, y_t):
     # compute the accuracy using Hungarian algorithm
     m = Munkres()
