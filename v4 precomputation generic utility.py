@@ -4,8 +4,6 @@ import pandas as pd
 import numpy as np 
 
 
-
-
 length_of_each_audio_file=3.0 #seconds
 
 ip_dir = r'/media/rabi/Data/ThesisData/audio data analysis/class-clustering/audio_cleaned_3_seconds'
