@@ -44,7 +44,7 @@ It converts the raw `csv` output of an algorithm to images, which are divided in
 * Output diretory path (where the results should be stored)
 
 #### `labelled_data_evaluation.py`
-Calculates the evaluation metrics of results form labeled data. It takes as input the resulting `csv` file after training a model on labeled data.
+Calculates the evaluation metrics of results form labeled data.It takes as input the resulting `csv` file after training a model on labeled data. It also takes as input the number of target clusters. The labels are taken from the file names (as mentioned in `v4 precomputation generic utility.py`)  
 
 #### `loss_plots.py`
 Plots the learning curve of individual and multiple algorithms. The input directory and loss values from each iteration (for an algorithm) are given as input.  
