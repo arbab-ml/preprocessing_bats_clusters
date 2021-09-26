@@ -4,11 +4,7 @@ These scripts are used for preprocessing, evaluation, and plots generation. The 
 #### `v4 precomputation generic utility.py`
 Generates the equivalent file to batdetect for non-batdetect usage. It could be used on any dataset (bat/non-bat).  It takes as input:
 * Length of Audio files
-<<<<<<< HEAD
 * Input directory containing raw audio files(named according to their labels)
-=======
-* Input directory containing raw audio files (named according to their labels)
->>>>>>> f45abd24d4b7229dd771a1a74a3a0e6d965c8dc0
 * Output directory for resulting file
  
 #### `v4 precomputation generic.py`
