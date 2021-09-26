@@ -49,7 +49,7 @@ Calculates the evaluation metrics of results form labeled data. It takes as inpu
 #### `loss_plots.py`
 Plots the learning curve of individual and multiple algorithms. The input directory and loss values from each iteration (for an algorithm) are given as input.  
 
-####  `batdetect/bat_eval/run_detector.py`
+####  `bat_detect/bat_eval/run_detector.py`
 
 Python code for the detection of bat echolocation calls in full spectrum audio recordings. This code recreate the results from the paper [Bat Detective - Deep Learning Tools for Bat Acoustic Signal Detection](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005995). You will also find some additional information and data on our [project page](http://visual.cs.ucl.ac.uk/pubs/batDetective). For original implementation please refer to [This link](https://github.com/macaodha/batdetect)
 
