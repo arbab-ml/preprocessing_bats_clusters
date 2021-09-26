@@ -4,7 +4,7 @@ These scripts are used for preprocessing, evaluation, and plots generation. The 
 #### `v4 precomputation generic utility.py`
 Generates the equivalent file to batdetect for non-batdetect usage. It could be used on any dataset (bat/non-bat).  It takes as input:
 * Length of Audio files
-* Input directory containing raw audio files
+* Input directory containing raw audio files(named according to their labels)
 * Output directory for resulting file
  
 #### `v4 precomputation generic.py`
@@ -48,5 +48,16 @@ Calculates the evaluation metrics of results form labeled data. It takes as inpu
 
 #### `loss_plots.py`
 Plots the learning curve of individual and multiple algorithms. The input directory and loss values from each iteration (for an algorithm) are given as input.  
+
+####  `batdetect/bat_eval/run_detector.py`
+
+Python code for the detection of bat echolocation calls in full spectrum audio recordings. This code recreate the results from the paper [Bat Detective - Deep Learning Tools for Bat Acoustic Signal Detection](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005995). You will also find some additional information and data on our [project page](http://visual.cs.ucl.ac.uk/pubs/batDetective). For original implementation please refer to [This link](https://github.com/macaodha/batdetect)
+
+`bat_eval` contains lightweight python scripts that load a pretrained model and run the detector on a directory of audio files. No GPU is required for this step.  
+
+It takes as input (from line `90` ownwards)
+* Input directory containing raw audio files
+* Output directory where to save the results
+* Bat call detection confidence threshold 
 
 **Deprecated Files**: `v1 precomputation.py`, `v2 precomputation_kaleidoscope.py` `v3_specie precomputation all from batdetect.py` `v3 precomputation all from batdetect.py`
